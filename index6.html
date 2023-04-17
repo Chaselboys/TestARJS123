@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>AR.js GeoLocation Example</title>
+		<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+		<script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.0.5/aframe/build/aframe-ar.js"></script>
+	</head>
+	<script>
+		navigator.geolocation.getCurrentPosition(function(position) {
+		  var latitude = position.coords.latitude;
+		  var longitude = position.coords.longitude;
+		  console.log('Latitude: ' + latitude);
+		  console.log('Longitude: ' + longitude);
+		});
+
+	</script>
+	<body style='margin: 0; overflow: hidden;'>
+		<a-scene embedded arjs='sourceType: webcam;'>
+			<!-- 经纬度定位 -->
+			<a-entity gps-camera rotation-reader></a-entity>
+			<!-- 显示模型 -->
+			<a-entity gltf-model="url(your-model.gltf)" scale="0.5 0.5 0.5"></a-entity>
+		</a-scene>
+	</body>
+</html>
