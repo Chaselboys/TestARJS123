@@ -27,7 +27,7 @@
 navigator.geolocation.getCurrentPosition(pos => {
   let latitude = pos.coords.latitude;
   let longitude = pos.coords.longitude;
-  
+  console.log("当前经纬度,精度:{},维度:{}",latitude,longitude)
   // Request streetview image with location 
   let streetview = await getStreetviewImage(latitude, longitude);
   
