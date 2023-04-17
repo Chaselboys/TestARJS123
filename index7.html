@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang ="en">
+	 <head>
+	    <meta charset="utf-8">
+	    <title>AR.js GeoLocation Example</title>
+	    <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+	    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/2.0.5/aframe/build/aframe-ar.js"></script>
+	  </head>
+	  <body style='margin: 0; overflow: hidden;'>
+	    <a-scene embedded arjs='sourceType: webcam;'>
+	      <!-- 经纬度定位 -->
+	      <a-entity gps-camera rotation-reader></a-entity>
+	      <!-- 显示模型 -->
+	      <a-entity gltf-model="url(./static/obj/Duck.gltf)" scale="0.5 0.5 0.5" position="0 0 -10"></a-entity>
+	    </a-scene>
+	
+	    <script>
+	      // 获取用户当前位置信息
+	      navigator.geolocation.getCurrentPosition(function(position) {
+	        var latitude = position.coords.latitude;
+	        var longitude = position.coords.longitude;
+	
+	        // 计算模型位置
+	        var modelLat = 40.7128;  // 你的3D模型所在位置的经纬度信息
+	        var modelLon = -74.0060;
+	        var latRad = latitude * Math.PI / 180;
+	        var lonRad = longitude * Math.PI / 180;
+	        var modelLatRad = modelLat * Math.PI / 180;
+	        var modelLonRad = modelLon * Math.PI / 180;
+	        var R = 6371;  // 地球半径，单位 km
+	        var dist = R * Math.acos(Math.sin(latRad) * Math.sin(modelLatRad) + Math.cos(latRad) * Math.cos(modelLatRad) * Math.cos(lonRad - modelLonRad));
+	        var x = -dist * Math.sin(lonRad - modelLonRad) * 1000;  // 注意：ARjs 的单位是毫米
+	        var z = -dist * Math.cos(lonRad - modelLonRad) * 1000;
+	
+	        // 设置模型位置
+	        var model = document.querySelector("a-entity[gltf-model='url(your-model.gltf)']");
+	        model.setAttribute('position', x + ' 0 ' + z);
+	      });
+	    </script>
+	  </body>
+	</html>

@@ -1,48 +1,59 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <title>AR.js Street View</title>
-  <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-  
-</head>
-<body>
-<a-scene embedded arjs>
-  <a-assets>
-    <a-asset-item id="tree" src="./static/obj/Duck.gltf"></a-asset-item> 
-  </a-assets>
-  
-  <!-- Create tree anchor -->
-  <a-anchor hit-testing-enabled="true" id="treeAnchor">
-    <a-entity scale="0.2 0.2 0.2" gltf-model="#tree" position="0 0 0"></a-entity>
-  </a-anchor>
-  
-  <!-- Define camera -->
-  <a-camera-static/>
-</a-scene>
+	<head>
+		<meta charset="utf-8">
+		<title>AR.js Street View</title>
+		<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+		<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
 
-<script>
-// Get geolocation 
-navigator.geolocation.getCurrentPosition(pos => {
-  let latitude = pos.coords.latitude;
-  let longitude = pos.coords.longitude;
-  console.log("当前经纬度,精度:{},维度:{}",latitude,longitude)
-  // Request streetview image with location 
-  let streetview = await getStreetviewImage(latitude, longitude);
-  
-  // Set AR.js image tracker to use streetview image
-  document.querySelector('a-scene').renderer.domElement.style.backgroundImage = "url(" + streetview + ")";
-  
-  // Set camera position/rotation
-  document.querySelector('a-scene').camera.position.set(longitude, latitude, 0);
-  document.querySelector('a-scene').camera.rotation.set(-90, 0, 0); 
-  
-  // Add anchor to the scene 
-  var treeAnchor = document.querySelector('#treeAnchor');
-  treeAnchor.object3D.position.set(longitude, latitude, 0);
-  treeAnchor.object3D.updateMatrixWorld(true);
-}); 
-</script>
-</body>
+	</head>
+	<body>
+		<a-scene embedded arjs>
+			<a-assets>
+				<a-asset-item id="tree" src="./static/obj/Duck.gltf"></a-asset-item>
+			</a-assets>
+
+			<!-- Create tree anchor -->
+			<a-anchor hit-testing-enabled="true" id="treeAnchor">
+				<a-entity scale="0.2 0.2 0.2" gltf-model="#tree" position="0 0 0"></a-entity>
+			</a-anchor>
+
+			<!-- Define camera -->
+			<a-camera-static />
+		</a-scene>
+
+		<script>
+			// Get geolocation 
+			navigator.geolocation.getCurrentPosition(pos => {
+				let latitude = pos.coords.latitude;
+				let longitude = pos.coords.longitude;
+				console.log("当前经纬度,精度:{},维度:{}", latitude, longitude)
+				// Request streetview image with location 
+				// let streetview = await getStreetviewImage(latitude, longitude);
+
+				// Set AR.js image tracker to use streetview image
+				//document.querySelector('a-scene').renderer.domElement.style.backgroundImage = "url(" + streetview + ")";
+
+				// Set camera position/rotation
+
+
+				let camera = document.querySelector('a-scene').camera;
+				console.log("camear:", camera)
+				if (camera.position) {
+					camera.position.set(longitude, latitude, 0);
+				}
+				var treeAnchor = document.querySelector('#treeAnchor');
+				if (treeAnchor && treeAnchor.object3D) {
+					treeAnchor.object3D.position.set(longitude, latitude, 0);
+				}
+
+
+				document.querySelector('a-scene').camera.rotation.set(-90, 0, 0);
+
+				// Add anchor to the scene 
+				treeAnchor.object3D.position.set(longitude, latitude, 0);
+				treeAnchor.object3D.updateMatrixWorld(true);
+			});
+		</script>
+	</body>
 </html>
