@@ -19,10 +19,13 @@
 	      navigator.geolocation.getCurrentPosition(function(position) {
 	        var latitude = position.coords.latitude;
 	        var longitude = position.coords.longitude;
-	
+			document.write("当前经纬度,精度:"+ latitude+"维度:"+ longitude);
+	//		latitude: 39.82907,
+		 // longitude: 116.28611
+	//
 	        // 计算模型位置
-	        var modelLat = 40.7128;  // 你的3D模型所在位置的经纬度信息
-	        var modelLon = -74.0060;
+	        var modelLat = 39.49405;  // 你的3D模型所在位置的经纬度信息
+	        var modelLon = 116.164897;
 	        var latRad = latitude * Math.PI / 180;
 	        var lonRad = longitude * Math.PI / 180;
 	        var modelLatRad = modelLat * Math.PI / 180;
